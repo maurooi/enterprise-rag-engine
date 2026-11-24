@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+
+.env
+.env.*
+!.env.example
+
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+Thumbds.db
