@@ -1,7 +1,7 @@
 [project]
-name = "01-enterprise-rag"
+name = "enterprise-rag-engine"
 version = "0.1.0"
-description = "Add your description here"
+description = "Production-grade B2B RAG API with hybrid search, citations and automated evals"
 readme = "README.md"
 authors = [
     { name = "maurooi", email = "oi.mauro95@gmail.com" }
@@ -9,12 +9,8 @@ authors = [
 requires-python = ">=3.12"
 dependencies = []
 
-[project.scripts]
-01-enterprise-rag = "01_enterprise_rag:main"
-
-[build-system]
-requires = ["uv_build>=0.12.19,<0.13.0"]
-build-backend = "uv_build"
+[tool.ev]
+package = false
 
 [dependency-groups]
 dev = [
