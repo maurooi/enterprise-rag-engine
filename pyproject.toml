@@ -7,13 +7,25 @@ authors = [
     { name = "maurooi", email = "oi.mauro95@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi>=0.165.0",
+    "pydantic-settings>=2.16.3",
+    "uvicorn[standard]>=0.54.0",
+]
 
 [tool.uv]
 package = false
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "pytest>=9.2.0",
     "ruff>=0.17.6",
 ]
+
+[tool.ruff]
+line-lenght = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
