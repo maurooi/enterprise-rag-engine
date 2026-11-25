@@ -1,15 +1,18 @@
-from fastapi import APIRouter
+from typing import Annotated
 
-from app.api.v1.models import HealthResponse
-from app.core.config import get_settings
+from fastapi import APIRouter, Depends
 
-settings = get_settings()
+from app.api.v1.schemas import HealthResponse
+from app.core.config import Settings, get_settings
 
-router = APIRouter(prefix="/api/v1", tags=["Health", "v1"])
+router = APIRouter(prefix="/api/v1", tags=["Health"])
 
 
 @router.get("/health", response_model=HealthResponse)
-async def health() -> HealthResponse:
+async def health(settings: Annotated[Settings, Depends(get_settings)]) -> HealthResponse:
     return HealthResponse(
-        app_name=settings.app_name, environment=settings.app_env, version=settings.version, status="ok"
+        app_name=settings.app_name,
+        environment=settings.app_env,
+        version=settings.app_version,
+        status="ok",
     )

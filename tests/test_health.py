@@ -1,10 +1,10 @@
-from app.api.v1 import health
+from fastapi.testclient import TestClient
+
 from app.core.config import get_settings
 from app.main import app
 
-from fastapi.testclient import TestClient
-
 client = TestClient(app)
+
 
 def test_health() -> None:
     response = client.get("/api/v1/health")
@@ -14,5 +14,5 @@ def test_health() -> None:
     data = response.json()
     assert data["app_name"] == settings.app_name
     assert data["environment"] == settings.app_env
-    assert data["version"] == settings.version
-    assert data["status"] == "ok" 
+    assert data["version"] == settings.app_version
+    assert data["status"] == "ok"

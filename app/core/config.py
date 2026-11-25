@@ -1,3 +1,4 @@
+import urllib
 from functools import lru_cache
 from typing import Literal
 
@@ -19,15 +20,18 @@ class Settings(BaseSettings):
     postgres_user: str
     postgres_password: SecretStr
     postgres_db: str
-    version: str
+    app_version: str
 
     @property
     def async_database_url(self) -> str:
         """Assembles and returns the database URL"""
+        parsed_postgres_password = urllib.parse.quote_plus(
+            self.postgres_password.get_secret_value()
+        )
         url = (
             "postgresql+asyncpg://"
             f"{self.postgres_user}:"
-            f"{self.postgres_password.get_secret_value()}@"
+            f"{parsed_postgres_password}@"
             f"{self.postgres_host}:"
             f"{self.postgres_port}/"
             f"{self.postgres_db}"
