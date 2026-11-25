@@ -1,4 +1,4 @@
-import urllib
+from urllib.parse import quote_plus
 from functools import lru_cache
 from typing import Literal
 
@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     @property
     def async_database_url(self) -> str:
         """Assembles and returns the database URL"""
-        parsed_postgres_password = urllib.parse.quote_plus(
+        parsed_postgres_password = quote_plus(
             self.postgres_password.get_secret_value()
         )
         url = (
