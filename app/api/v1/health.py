@@ -1,5 +1,5 @@
-from typing import Annotated
 import logging
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy import text
