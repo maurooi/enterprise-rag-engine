@@ -1,4 +1,5 @@
 from typing import Annotated
+import logging
 
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy import text
@@ -7,6 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.v1.schemas import HealthResponse
 from app.core.config import Settings, get_settings
 from app.db.session import get_db_session
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["Health"])
 
@@ -23,6 +26,7 @@ async def health(
         database_status = "ready"
 
     except Exception:
+        logger.warning("Database healthcheck failed", exc_info=True)
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
         app_status = "degraded"
         database_status = "disconnected"
