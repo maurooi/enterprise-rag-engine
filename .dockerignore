@@ -2,9 +2,10 @@
 .env.*
 .venv
 __pycache__
-*.__pycache__
+**/.__pycache__
 .ruff_cache
 .pytest_cache
 tests
 README.md
 .git
+**/*.pyc
