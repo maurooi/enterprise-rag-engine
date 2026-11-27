@@ -1,6 +1,6 @@
-from urllib.parse import quote_plus
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import quote_plus
 
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -25,9 +25,7 @@ class Settings(BaseSettings):
     @property
     def async_database_url(self) -> str:
         """Assembles and returns the database URL"""
-        parsed_postgres_password = quote_plus(
-            self.postgres_password.get_secret_value()
-        )
+        parsed_postgres_password = quote_plus(self.postgres_password.get_secret_value())
         url = (
             "postgresql+asyncpg://"
             f"{self.postgres_user}:"
