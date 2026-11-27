@@ -15,9 +15,11 @@ async def override_db_down() -> AsyncIterator[AsyncMock]:
     mock_session.execute.side_effect = ConnectionError("DB unreachable")
     yield mock_session
 
+
 async def override_db_up() -> AsyncIterator[AsyncMock]:
     mock_session = AsyncMock()
     yield mock_session
+
 
 def test_health_db_up() -> None:
     app.dependency_overrides[get_db_session] = override_db_up
@@ -30,10 +32,11 @@ def test_health_db_up() -> None:
         assert data["app_name"] == settings.app_name
         assert data["environment"] == settings.app_env
         assert data["version"] == settings.app_version
-        assert data["status"] == "ok"
-        assert data["database"] == "ready"
+        assert data["app_status"] == "ok"
+        assert data["database_status"] == "ready"
     finally:
         app.dependency_overrides.clear()
+
 
 def test_health_db_down() -> None:
     app.dependency_overrides[get_db_session] = override_db_down
@@ -46,7 +49,7 @@ def test_health_db_down() -> None:
         assert data["app_name"] == settings.app_name
         assert data["environment"] == settings.app_env
         assert data["version"] == settings.app_version
-        assert data["status"] == "degraded"
-        assert data["database"] == "disconnected"
+        assert data["app_status"] == "degraded"
+        assert data["database_status"] == "disconnected"
     finally:
         app.dependency_overrides.clear()
