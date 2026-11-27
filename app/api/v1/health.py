@@ -1,7 +1,8 @@
 from typing import Annotated
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text
+
 from fastapi import APIRouter, Depends, Response, status
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.schemas import HealthResponse
 from app.core.config import Settings, get_settings
@@ -17,21 +18,19 @@ async def health(
     session: Annotated[AsyncSession, Depends(get_db_session)],
 ) -> HealthResponse:
     try:
-        await session.execute(
-            text("SELECT 1")
-        )
-        health_status = "ok"
-        database = "ready"
-        
+        await session.execute(text("SELECT 1"))
+        app_status = "ok"
+        database_status = "ready"
+
     except Exception:
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
-        health_status = "degraded"
-        database = "disconnected"
+        app_status = "degraded"
+        database_status = "disconnected"
 
     return HealthResponse(
-            app_name=settings.app_name,
-            environment=settings.app_env,
-            version=settings.app_version,
-            status=health_status,
-            database=database,
-        )
+        app_name=settings.app_name,
+        environment=settings.app_env,
+        version=settings.app_version,
+        app_status=app_status,
+        database_status=database_status,
+    )
